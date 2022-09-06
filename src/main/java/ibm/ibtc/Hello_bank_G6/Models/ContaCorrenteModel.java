@@ -18,6 +18,12 @@ public class ContaCorrenteModel{
     @Column(name = "c_saldo", nullable = false)
     private Double saldo;
 
+    @Column(name = "c_limite_negativo") //if null = 0
+    private Double limiteNegativo;
+
+    @Column(name = "c_rentabilidade_at")
+    private Double rentabilidade;
+
     @Column(name = "c_created_at", nullable = false)
     private LocalDateTime created_at;
 

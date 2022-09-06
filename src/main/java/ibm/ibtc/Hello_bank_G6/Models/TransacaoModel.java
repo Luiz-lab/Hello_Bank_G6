@@ -16,19 +16,22 @@ public class TransacaoModel {
     @Column(name = "c_transacao_id", updatable = false, unique = true, nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn (name = "c_cliente_remetente_id", referencedColumnName= "c_cliente_id")
-    private ClienteModel clienteRemetente;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn (name = "c_cliente_destinatario_id", referencedColumnName= "c_cliente_id")
-    private ClienteModel clienteDestinatario;
-
     @Column(name = "c_tipo_transacao", nullable = false)
-    private int tipoTransacao;
+    private String tipoTransacao;
 
     @Column(name = "c_valor", nullable = false)
     private Double valor;
+
+    @Column(name = "c_saldo_anterior", nullable = false)
+    private Double saldoAnterior;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn (name = "c_cliente_id", referencedColumnName= "c_cliente_id", nullable = false)
+    private ClienteModel cliente;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn (name = "c_transferencia_id", referencedColumnName= "c_transferencia_id", nullable = true)
+    private TransferenciaModel transferencia;
 
     @Column(name = "c_created_at", nullable = false)
     private LocalDateTime created_at;
