@@ -17,7 +17,8 @@ public class TransacaoModel {
     private UUID id;
 
     @Column(name = "c_tipo_transacao", nullable = false)
-    private String tipoTransacao;
+    @Enumerated(EnumType.STRING)
+    private TipoTransacaoModel tipoTransacao;
 
     @Column(name = "c_valor", nullable = false)
     private Double valor;
@@ -29,7 +30,7 @@ public class TransacaoModel {
     @JoinColumn (name = "c_cliente_id", referencedColumnName= "c_cliente_id", nullable = false)
     private ClienteModel cliente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "c_transferencia_id", referencedColumnName= "c_transferencia_id", nullable = true)
     private TransferenciaModel transferencia;
 
