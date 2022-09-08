@@ -20,6 +20,36 @@
 - [Rodrigo Nunes da Silva]()
 - [Rosemberg Vieira Araújo Filho](https://github.com/RosembergAraujo)
 
+## Linguagem, ferramentas e frameworks utilizados no projeto.
+
+[Trello](https://trello.com/) 
+```
+Usamos o trello para metodologia ágil do projeto através do kanban.
+```
+[Java](https://www.oracle.com/java/technologies/downloads/) 
+```
+A linguagem de programação utilizada no projeto é o Java na versão 17.
+```
+
+[Visual Studio Code](https://code.visualstudio.com/ ) 
+```
+A codificação foi feita no Visual Studio Code, um editor de código-fonte.
+```
+
+[Spring Boot](https://spring.io/)
+```
+ Utilizamos o Spring Boot que é framework Java open source, para 
+ facilitar o processo das aplicações Java.
+```
+
+[Spring Initializr](https://start.spring.io/)
+```
+ Usamos o spring initializr para realizar uma estrutura básica do projeto
+ e uma especificação de compilação Maven para construir o código.
+```
+
+
+
 
 
 
