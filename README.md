@@ -38,14 +38,12 @@ A codificação foi feita no Visual Studio Code, um editor de código-fonte.
 
 [Spring Boot](https://spring.io/)
 ```
- Utilizamos o Spring Boot que é framework Java open source, para 
- facilitar o processo das aplicações Java.
+ Utilizamos o Spring Boot que é framework Java open source, para facilitar o processo das aplicações Java.
 ```
 
 [Spring Initializr](https://start.spring.io/)
 ```
- Usamos o spring initializr para realizar uma estrutura básica do projeto
- e uma especificação de compilação Maven para construir o código.
+ Usamos o spring initializr para realizar uma estrutura básica do projeto e uma especificação de compilação Maven para construir o código.
 ```
 
 
