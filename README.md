@@ -1,5 +1,5 @@
-# Desafio Final (Banco ficticio HelloBank) | Turma 2 (Grupo 6)
-## Treinamento Gama Academy com IBM
+## Desafio Final (Banco ficticio HelloBank) | Turma 2 (Grupo 6)
+### Treinamento Gama Academy com IBM
 
 ```
   O banco fictício HelloBank está construindo uma nova plataforma e precisa de uma API para gerenciar as transações. Utilize suas novas habilidades com Java, Banco de dados e AWS.
