@@ -20,7 +20,7 @@
 - [Rodrigo Nunes da Silva]()
 - [Rosemberg Vieira Araújo Filho](https://github.com/RosembergAraujo)
 
-## Linguagem, ferramentas e frameworks utilizados no projeto.
+## Linguagens, ferramentas e frameworks utilizados no projeto.
 
 [Trello](https://trello.com/) 
 ```
