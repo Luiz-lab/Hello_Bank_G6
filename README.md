@@ -17,7 +17,7 @@
 - [Isaias Menezes Silva](https://www.linkedin.com/in/isaias-menezes-silva/)
 - [Luis Henrique Calixto de Souza](https://www.linkedin.com/in/luiz-henrique-calixto-de-souza-29b892170/)
 - [Matheus Cavalcante de Santana]()
-- [Rodrigo Nunes da Silva]()
+- [Rodrigo Nunes da Silva](https://www.linkedin.com/in/rodrigo-nunes-7a9a957b)
 - [Rosemberg Vieira Araújo Filho](https://github.com/RosembergAraujo)
 
 ## Linguagens, ferramentas e frameworks utilizados no projeto.
