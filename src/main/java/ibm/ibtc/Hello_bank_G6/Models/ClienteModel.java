@@ -1,5 +1,6 @@
 package ibm.ibtc.Hello_bank_G6.Models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -25,6 +26,7 @@ public class ClienteModel {
     @Column(name = "c_email", nullable = false, unique = true)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "c_senha", nullable = false)
     private String senha;
 
