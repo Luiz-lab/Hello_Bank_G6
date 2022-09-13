@@ -2,6 +2,8 @@ package ibm.ibtc.Hello_bank_G6.Models;
 
 import lombok.Cleanup;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +14,9 @@ import java.util.UUID;
 @Table(name = "transacao_t")
 public class TransacaoModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="org.hibernate.type.PostgresUUIDType")
+    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+    @GeneratedValue(generator = "UUIDGenerator")
     @Column(name = "c_transacao_id", updatable = false, unique = true, nullable = false)
     private UUID id;
 

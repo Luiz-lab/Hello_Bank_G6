@@ -5,7 +5,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/")
+
 public class DefaultRouteController {
+
 
 //    @GetMapping("/")
 //    public ModelAndView getAll() {

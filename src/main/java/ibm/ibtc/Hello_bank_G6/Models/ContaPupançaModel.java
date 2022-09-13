@@ -1,6 +1,8 @@
 package ibm.ibtc.Hello_bank_G6.Models;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +14,9 @@ import java.util.UUID;
 public class ContaPupançaModel{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="org.hibernate.type.PostgresUUIDType")
+    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+    @GeneratedValue(generator = "UUIDGenerator")
     @Column(name = "c_conta_poupanca_id", updatable = false, unique = true, nullable = false)
     private UUID id;
 
