@@ -1,5 +1,6 @@
 package ibm.ibtc.Hello_bank_G6.Models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Table(name = "conta_corrente_t")
 public class ContaCorrenteModel{
     @Id
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Type(type="org.hibernate.type.PostgresUUIDType")
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
     @GeneratedValue(generator = "UUIDGenerator")
@@ -31,8 +33,10 @@ public class ContaCorrenteModel{
     @Column(name = "c_updated_at")
     private LocalDateTime updated_at;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "c_cliente_id")
     private ClienteModel clienteModel;
+
 }
 
