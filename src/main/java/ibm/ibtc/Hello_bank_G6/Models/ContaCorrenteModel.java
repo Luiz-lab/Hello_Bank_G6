@@ -14,7 +14,6 @@ import java.util.UUID;
 @Table(name = "conta_corrente_t")
 public class ContaCorrenteModel{
     @Id
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Type(type="org.hibernate.type.PostgresUUIDType")
     @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
     @GeneratedValue(generator = "UUIDGenerator")

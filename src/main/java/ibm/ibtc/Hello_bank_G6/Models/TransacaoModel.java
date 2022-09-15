@@ -1,6 +1,5 @@
 package ibm.ibtc.Hello_bank_G6.Models;
 
-import lombok.Cleanup;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -22,21 +21,14 @@ public class TransacaoModel {
 
     @Column(name = "c_tipo_transacao", nullable = false)
     @Enumerated(EnumType.STRING)
-    private TipoTransacaoModel tipoTransacao;
+    private TipoTransacaoEnum tipoTransacao;
 
     @Column(name = "c_valor", nullable = false)
     private Double valor;
 
-    @Column(name = "c_saldo_anterior", nullable = false)
-    private Double saldoAnterior;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "c_cliente_id", referencedColumnName= "c_cliente_id", nullable = false)
     private ClienteModel cliente;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn (name = "c_transferencia_id", referencedColumnName= "c_transferencia_id", nullable = true)
-    private TransferenciaModel transferencia;
 
     @Column(name = "c_created_at", nullable = false)
     private LocalDateTime created_at;
