@@ -8,9 +8,5 @@ import java.util.UUID;
 public class TransacaoCriarDTO {
     private String tipoTransacao;
     private Double valor;
-    private Double saldoAnterior;
     private String clienteId;
-    private String cpf;
-    private String tel;
-    private String endereco;
 }

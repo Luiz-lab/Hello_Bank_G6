@@ -34,7 +34,7 @@ public class ContaCorrenteModel{
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn (name = "c_cliente_id")
+    @JoinColumn (name = "c_cliente_id", unique = true)
     private ClienteModel clienteModel;
 
 }

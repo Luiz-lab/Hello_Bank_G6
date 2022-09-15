@@ -171,11 +171,8 @@ public class ClienteController {
 
                 if (encoder.matches((CharSequence) req.get("senha"), clienteModel.get().getSenha())) {
 
-                    var clienteViewModel = new ClienteViewModel();
-                    BeanUtils.copyProperties(clienteModel.get(), clienteViewModel);
-
                     return ResponseEntity.status(HttpStatus.OK).body(new Object() {
-                        public final Object Cliente = clienteViewModel;
+                        public final Object Cliente = clienteModel.get();
                         public final Object Conta = _contaCorrenteRepository.findByClienteModel(clienteModel.get());
                         public final Object Token = new JWTGenerator().gerarJWT(clienteModel.get().getCpf());
                     });
