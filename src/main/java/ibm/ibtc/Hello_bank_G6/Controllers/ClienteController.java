@@ -46,14 +46,26 @@ public class ClienteController {
     }
 
     @PostMapping("/{param_id}")
-    public ResponseEntity<Object> findById(@PathVariable String param_id){
+    public ResponseEntity<Object> findById(@PathVariable String param_id) {
         var cliente = _clienteRepository.findById(UUID.fromString(param_id));
+        if (cliente.isPresent()) {
+            var contaCorrente = _contaCorrenteRepository.findByClienteModel(cliente.get());
+            if (contaCorrente.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(new Object() {
+                    public final Object Cliente = cliente.get();
+                    public final Object Conta = contaCorrente.get();
+                });
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Object() {
+                    public final Object Mensagem = "Houve um problema com a conta, conta relacionada a este cliente não encontrada";
+                });
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Object() {
+                public final Object Mensagem = "Conta não encontrada";
+            });
+        }
 
-        return (cliente.isEmpty()) ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
-            public final Object Mensagem = "Cliente não encontrado.";
-        }) : ResponseEntity.status(HttpStatus.OK).body(new Object() {
-            public final Object Cliente = cliente.get();
-        });
 
     }
 
@@ -61,13 +73,10 @@ public class ClienteController {
     public ResponseEntity<Object> createAnimal(@RequestBody ClienteCriarDTO clienteReq) {
 
         var clienteModel = new ClienteModel();
-        var clienteView = new ClienteViewModel();
         var contaCorrenteModel = new ContaCorrenteModel();
-        var contaCorrenteView = new ContaCorrenteViewModel();
         var limiteNegativoPadrao = 500.0;
 
         BeanUtils.copyProperties(clienteReq, clienteModel);
-        BeanUtils.copyProperties(clienteReq, clienteView);
 
         clienteModel.setCreated_at(LocalDateTime.now());
         clienteModel.setUpdated_at(LocalDateTime.now());
@@ -77,7 +86,6 @@ public class ClienteController {
         contaCorrenteModel.setLimiteNegativo(limiteNegativoPadrao);
         contaCorrenteModel.setClienteModel(clienteModel);
 
-        BeanUtils.copyProperties(contaCorrenteModel, contaCorrenteView);
 
         clienteModel.setSenha(encoder.encode(clienteModel.getSenha()));
 
@@ -85,9 +93,9 @@ public class ClienteController {
         _contaCorrenteRepository.save(contaCorrenteModel);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new Object() {
-            public final Object cliente = clienteView;
-            public final Object conta = contaCorrenteView;
-            public final Object token = new JWTGenerator().gerarJWT(clienteModel.getCpf());
+            public final Object Cliente = clienteModel;
+            public final Object Conta = contaCorrenteModel;
+            public final Object Token = new JWTGenerator().gerarJWT(clienteModel.getCpf());
         });
     }
 
@@ -98,25 +106,25 @@ public class ClienteController {
 
         if (cliente.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
-                public final Object message = "Cliente não encontrado";
+                public final Object Mensagem = "Cliente não encontrado";
             });
         } else {
             var contaCorrente = _contaCorrenteRepository.findByClienteModel(cliente.get());
             if (contaCorrente.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Object() {
-                    public final Object message = "Houve um problema com a conta";
+                    public final Object Mensagem = "Houve um problema com a conta";
                 });
-            }else {
+            } else {
 
-                if(contaCorrente.get().getSaldo() != 0){
+                if (contaCorrente.get().getSaldo() != 0) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Object() {
-                        public final Object message = "Ainda a saldo na conta associada a este cliente";
+                        public final Object Mensagem = "Ainda a saldo na conta associada a este cliente";
                     });
-                }else {
+                } else {
                     _contaCorrenteRepository.deleteById(contaCorrente.get().getId());
                     _clienteRepository.deleteById(UUID.fromString(param_id));
                     return ResponseEntity.status(HttpStatus.OK).body(new Object() {
-                        public final Object message = "Cliente deletado";
+                        public final Object Mensagem = "Cliente deletado";
                     });
                 }
             }
@@ -131,7 +139,7 @@ public class ClienteController {
 
         if (cliente.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
-                public final Object message = "Cliente não encontrado";
+                public final Object Mensagem = "Cliente não encontrado";
             });
         } else {
             ClienteModel clienteResult = new ClienteModel();
@@ -147,19 +155,19 @@ public class ClienteController {
             _clienteRepository.save(clienteResult);
 
             return ResponseEntity.status(HttpStatus.OK).body(new Object() {
-                public final Object cliente = clienteResult;
+                public final Object Cliente = clienteResult;
             });
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> Auth(@RequestBody Map<String, Object> req){
+    public ResponseEntity<Object> Auth(@RequestBody Map<String, Object> req) {
         Optional<ClienteModel> clienteModel;
         if (req.get("cpf") != null && req.get("senha") != null) {
 
             clienteModel = _clienteRepository.findByCpf(String.valueOf(req.get("cpf")));
 
-            if(clienteModel.isPresent()){
+            if (clienteModel.isPresent()) {
 
                 if (encoder.matches((CharSequence) req.get("senha"), clienteModel.get().getSenha())) {
 
@@ -167,23 +175,23 @@ public class ClienteController {
                     BeanUtils.copyProperties(clienteModel.get(), clienteViewModel);
 
                     return ResponseEntity.status(HttpStatus.OK).body(new Object() {
-                        public final Object cliente = clienteViewModel;
-                        public final Object conta = _contaCorrenteRepository.findByClienteModel(clienteModel.get());
-                        public final Object token = new JWTGenerator().gerarJWT(clienteModel.get().getCpf());
+                        public final Object Cliente = clienteViewModel;
+                        public final Object Conta = _contaCorrenteRepository.findByClienteModel(clienteModel.get());
+                        public final Object Token = new JWTGenerator().gerarJWT(clienteModel.get().getCpf());
                     });
-                }else {
+                } else {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Object() {
-                        public final Object mensagem = "Senha incorreta";
+                        public final Object Mensagem = "Senha incorreta";
                     });
                 }
-            }else {
+            } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Object() {
-                    public final Object mensagem = "Usuário não encontrado";
+                    public final Object Mensagem = "Usuário não encontrado";
                 });
             }
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Object() {
-            public final Object mensagem = "Campo faltante";
+            public final Object Mensagem = "Campo faltante";
         });
     }
 }
