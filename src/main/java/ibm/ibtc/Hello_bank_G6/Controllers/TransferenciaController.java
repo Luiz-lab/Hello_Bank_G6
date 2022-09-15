@@ -1,17 +1,13 @@
 package ibm.ibtc.Hello_bank_G6.Controllers;
 
 
-import ibm.ibtc.Hello_bank_G6.DTO.ClienteCriarDTO;
 import ibm.ibtc.Hello_bank_G6.DTO.TransacaoCriarDTO;
-import ibm.ibtc.Hello_bank_G6.Models.ClienteModel;
-import ibm.ibtc.Hello_bank_G6.Models.ContaCorrenteModel;
 import ibm.ibtc.Hello_bank_G6.Models.TipoTransacaoEnum;
 import ibm.ibtc.Hello_bank_G6.Models.TransacaoModel;
 import ibm.ibtc.Hello_bank_G6.Repositories.IClienteRepository;
 import ibm.ibtc.Hello_bank_G6.Repositories.IContaCorrenteRepository;
 import ibm.ibtc.Hello_bank_G6.Repositories.ITransacaoRepository;
-import ibm.ibtc.Hello_bank_G6.Utils.JWTGenerator;
-import org.springframework.beans.BeanUtils;
+import ibm.ibtc.Hello_bank_G6.Repositories.ITransferenciaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,47 +17,33 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/transacao")
-public class TransacaoController {
+@RequestMapping("/transferencia")
+public class TransferenciaController {
     private final IContaCorrenteRepository _contaCorrenteRepository;
     private final IClienteRepository _clienteRepository;
     private final ITransacaoRepository _transacaoRepository;
+    private final ITransferenciaRepository _transferenciaRepository;
 
-    public TransacaoController(IContaCorrenteRepository contaCorrenteRepository,
-                               IClienteRepository clienteRepository,
-                               ITransacaoRepository transacaoRepository) {
+    public TransferenciaController(IContaCorrenteRepository contaCorrenteRepository,
+                                   IClienteRepository clienteRepository,
+                                   ITransacaoRepository transacaoRepository,
+                                   ITransferenciaRepository transferenciaRepository) {
         this._contaCorrenteRepository = contaCorrenteRepository;
         this._clienteRepository = clienteRepository;
         this._transacaoRepository = transacaoRepository;
-    }
-
-    @PostMapping("/ClienteId/{param_id}")
-    public ResponseEntity<Object> findById(@PathVariable String param_id){
-        var cliente = _clienteRepository.findById(UUID.fromString(param_id));
-        if(cliente.isPresent()){
-            var transacoes = _transacaoRepository.findAllByCliente(cliente.get());
-            return (transacoes.isEmpty()) ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
-                public final Object Mensagem = "Tansação não encontrada!";
-            }) : ResponseEntity.status(HttpStatus.OK).body(new Object() {
-                public final Object Transacoes = transacoes.get();
-            });
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
-                public final Object Mensagem = "Cliente não encontrado";
-            });
-        }
-
+        this._transferenciaRepository = transferenciaRepository;
     }
 
     @PostMapping("/{param_id}")
-    public ResponseEntity<Object> findByCliente(@PathVariable String param_id){
-        var transacaoModel = _transacaoRepository.findById(UUID.fromString(param_id));
+    public ResponseEntity<Object> findById(@PathVariable String param_id){
+        var transferenciaModel = _transacaoRepository.findById(UUID.fromString(param_id));
 
-        return (transacaoModel.isEmpty()) ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
+        return (transferenciaModel.isEmpty()) ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
             public final Object Mensagem = "Tansação não encontrada!";
         }) : ResponseEntity.status(HttpStatus.OK).body(new Object() {
-            public final Object Conta = transacaoModel.get();
+            public final Object Conta = transferenciaModel.get();
         });
+
     }
 
     @PutMapping("/updateContaCorrente/{param_id}")
