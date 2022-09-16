@@ -35,9 +35,9 @@ public class TransacaoController {
         this._transacaoRepository = transacaoRepository;
     }
 
-    @PostMapping("/ClienteId/{param_id}")
+    @PostMapping("/ClienteCpf/{param_id}")
     public ResponseEntity<Object> findById(@PathVariable String param_id){
-        var cliente = _clienteRepository.findById(UUID.fromString(param_id));
+        var cliente = _clienteRepository.findByCpf(param_id);
         if(cliente.isPresent()){
             var transacoes = _transacaoRepository.findAllByCliente(cliente.get());
             return (transacoes.isEmpty()) ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
@@ -50,7 +50,6 @@ public class TransacaoController {
                 public final Object Mensagem = "Cliente não encontrado";
             });
         }
-
     }
 
     @PostMapping("/{param_id}")

@@ -33,7 +33,7 @@ public class ContaCorrenteModel{
     private LocalDateTime updated_at;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn (name = "c_cliente_id", unique = true)
     private ClienteModel clienteModel;
 

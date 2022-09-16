@@ -19,11 +19,11 @@ public class TransferenciaModel {
     @Column(name = "c_transferencia_id", updatable = false, unique = true, nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn (name = "c_cliente_remetente_id", referencedColumnName= "c_cliente_id")
     private ClienteModel clienteRemetente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn (name = "c_cliente_destinatario_id", referencedColumnName= "c_cliente_id")
     private ClienteModel clienteDestinatario;
 

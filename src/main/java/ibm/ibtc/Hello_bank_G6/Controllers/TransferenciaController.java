@@ -1,9 +1,11 @@
 package ibm.ibtc.Hello_bank_G6.Controllers;
 
 
+import ibm.ibtc.Hello_bank_G6.DTO.TranferenciaCriarDTO;
 import ibm.ibtc.Hello_bank_G6.DTO.TransacaoCriarDTO;
 import ibm.ibtc.Hello_bank_G6.Models.TipoTransacaoEnum;
 import ibm.ibtc.Hello_bank_G6.Models.TransacaoModel;
+import ibm.ibtc.Hello_bank_G6.Models.TransferenciaModel;
 import ibm.ibtc.Hello_bank_G6.Repositories.IClienteRepository;
 import ibm.ibtc.Hello_bank_G6.Repositories.IContaCorrenteRepository;
 import ibm.ibtc.Hello_bank_G6.Repositories.ITransacaoRepository;
@@ -35,7 +37,7 @@ public class TransferenciaController {
     }
 
     @PostMapping("/{param_id}")
-    public ResponseEntity<Object> findById(@PathVariable String param_id){
+    public ResponseEntity<Object> findById(@PathVariable String param_id) {
         var transferenciaModel = _transacaoRepository.findById(UUID.fromString(param_id));
 
         return (transferenciaModel.isEmpty()) ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
@@ -43,98 +45,98 @@ public class TransferenciaController {
         }) : ResponseEntity.status(HttpStatus.OK).body(new Object() {
             public final Object Conta = transferenciaModel.get();
         });
-
     }
 
-    @PutMapping("/updateContaCorrente/{param_id}")
-    public ResponseEntity<Object> updateCliente(@PathVariable String param_id, @RequestBody Map<String, Object> req) {
-
-        var contaCorrente = _contaCorrenteRepository.findById(UUID.fromString(param_id));
-
-        if (contaCorrente.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
-                public final Object Mensagem = "Conta não encontrado";
+    @PostMapping("/AcharTransferenciasPeloRemetente/{param_id}")
+    public ResponseEntity<Object> findAllByRemetente(@PathVariable String param_id){
+        var cliente = _clienteRepository.findByCpf(param_id);
+        if(cliente.isPresent()){
+            var transferencia = _transferenciaRepository.findAllByClienteRemetente(cliente.get());
+            return (transferencia.isEmpty()) ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
+                public final Object Mensagem = "Este cliente não tem transferências";
+            }) : ResponseEntity.status(HttpStatus.OK).body(new Object() {
+                public final Object Transferencias = transferencia.get();
             });
-        } else {
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
+                public final Object Mensagem = "Cliente não encontrado";
+            });
+        }
+    }
 
-            if (req.get("saldo") != null) contaCorrente.get().setSaldo((double) req.get("saldo"));
-            if (req.get("limiteNegativo") != null) contaCorrente.get().setSaldo((double) req.get("limiteNegativo"));
-
-            contaCorrente.get().setUpdated_at(LocalDateTime.now());
-
-            _contaCorrenteRepository.save(contaCorrente.get());
-
-            return ResponseEntity.status(HttpStatus.OK).body(new Object() {
-                public final Object ContaCorrente = contaCorrente.get();
+    @PostMapping("/AcharTransferenciasPeloDestinatario/{param_id}")
+    public ResponseEntity<Object> findAllByDestinatario(@PathVariable String param_id){
+        var cliente = _clienteRepository.findByCpf(param_id);
+        if(cliente.isPresent()){
+            var transferencia = _transferenciaRepository.findAllByClienteDestinatario(cliente.get());
+            return (transferencia.isEmpty()) ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
+                public final Object Mensagem = "Este cliente não tem transferências";
+            }) : ResponseEntity.status(HttpStatus.OK).body(new Object() {
+                public final Object Transferencias = transferencia.get();
+            });
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
+                public final Object Mensagem = "Cliente não encontrado";
             });
         }
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<Object> criarTransacao(@RequestBody TransacaoCriarDTO transacaoCriarDTO) {
+    public ResponseEntity<Object> criarTranferencia(@RequestBody TranferenciaCriarDTO tranferenciaCriarDTO) {
 
-        var transacaoModel = new TransacaoModel();
+        var transferenciaModel = new TransferenciaModel();
+        var clienteDestinatario = _clienteRepository.findByCpf(tranferenciaCriarDTO.getDestinatarioCpf());
+        var clienteRemetente = _clienteRepository.findByCpf(tranferenciaCriarDTO.getRemetenteCpf());
 
-        var clienteModel = _clienteRepository.findById(UUID.fromString(transacaoCriarDTO.getClienteId()));
+        if (clienteDestinatario.isEmpty() || clienteRemetente.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
+                String r = clienteDestinatario.isEmpty() ? "Destinatário" : "Remetente";
+                public final Object Mensagem =  r + " não encontrado";
+            });
+        } else {
+            transferenciaModel.setClienteRemetente(clienteRemetente.get());
+            transferenciaModel.setClienteDestinatario(clienteDestinatario.get());
+            transferenciaModel.setValor(tranferenciaCriarDTO.getValor());
+            transferenciaModel.setCreated_at(LocalDateTime.now());
 
-        if (clienteModel.isPresent()) {
-            var contaCorrenteModel = _contaCorrenteRepository.findByClienteModel(clienteModel.get());
+            var contaCorrenteRemetente = _contaCorrenteRepository.findByClienteModel(clienteRemetente.get());
+            var contaCorrenteDestinatario = _contaCorrenteRepository.findByClienteModel(clienteDestinatario.get());
 
-            if (contaCorrenteModel.isPresent()) {
-                try {
-                    transacaoModel.setTipoTransacao(TipoTransacaoEnum.valueOf(transacaoCriarDTO.getTipoTransacao()));
-                } catch (IllegalArgumentException e) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
-                        public final Object Mensagem = "Tipo transação incorreto -> Exemplos corretos: \"SAQUE\", \"DEPOSITO\"";
-                        public final Object Erro = e;
-                    });
-                }
-                transacaoModel.setValor(transacaoCriarDTO.getValor());
-                transacaoModel.setCreated_at(LocalDateTime.now());
-                transacaoModel.setCliente(clienteModel.get());
-
-                if (transacaoModel.getTipoTransacao() == TipoTransacaoEnum.DEPOSITO) {
-                    contaCorrenteModel.get().setSaldo(contaCorrenteModel.get().getSaldo() + transacaoModel.getValor());
-                }
-                else if (transacaoModel.getTipoTransacao() == TipoTransacaoEnum.SAQUE) {
-
-                    if (transacaoModel.getValor() <= (contaCorrenteModel.get().getSaldo()) + contaCorrenteModel.get().getLimiteNegativo()) {
-                        if ((contaCorrenteModel.get().getSaldo() - transacaoModel.getValor()) + contaCorrenteModel.get().getLimiteNegativo() < 0) {
-                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Object() {
-                                public final Object Mensagem = "Não há limite disponível";
-                            });
-                        }
-                        contaCorrenteModel.get().setSaldo(contaCorrenteModel.get().getSaldo() - transacaoModel.getValor());
-                    }else {
+            if (contaCorrenteRemetente.isEmpty() || contaCorrenteDestinatario.isEmpty()) {
+                String r = contaCorrenteRemetente.isEmpty() ? "Remetente" : "Destinatário";
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
+                    public final Object Mensagem = r + " conta corrente não encontrada";
+                });
+            } else {
+                if (tranferenciaCriarDTO.getValor()
+                        <= (contaCorrenteRemetente.get().getSaldo())
+                        + contaCorrenteRemetente.get().getLimiteNegativo()
+                        && tranferenciaCriarDTO.getValor() > 0
+                ) {
+                    if ((contaCorrenteRemetente.get().getSaldo() - tranferenciaCriarDTO.getValor()) + contaCorrenteRemetente.get().getLimiteNegativo() < 0) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Object() {
                             public final Object Mensagem = "Não há limite disponível";
                         });
                     }
-                }else {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Object() {
-                        public final Object Mensagem = "Erro de enum tipoTransacao";
+                    contaCorrenteRemetente.get().setSaldo(contaCorrenteRemetente.get().getSaldo() - tranferenciaCriarDTO.getValor());
+                    contaCorrenteDestinatario.get().setSaldo(contaCorrenteDestinatario.get().getSaldo() + tranferenciaCriarDTO.getValor());
+
+                    _contaCorrenteRepository.save(contaCorrenteDestinatario.get());
+                    _contaCorrenteRepository.save(contaCorrenteRemetente.get());
+                    _transferenciaRepository.save(transferenciaModel);
+
+                    return ResponseEntity.status(HttpStatus.CREATED).body(new Object() {
+                        public final Object Transferencia = transferenciaModel;
+                        public final Object ContaRemetente = contaCorrenteRemetente.get();
+                        public final Object ContaDestinatario = contaCorrenteDestinatario.get();
+                    });
+
+                } else {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Object() {
+                        public final Object Mensagem = "Não há limite disponível";
                     });
                 }
-
-                _contaCorrenteRepository.save(contaCorrenteModel.get());
-                _transacaoRepository.save(transacaoModel);
-
-                return ResponseEntity.status(HttpStatus.CREATED).body(new Object() {
-                    public final Object Transacao = transacaoModel;
-                    public final Object ContaCorrente = contaCorrenteModel;
-                });
-
-            }else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
-                    public final Object Mensagem = "ContaCorrente associada ao clienteId não encontrado";
-                });
             }
-
-
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
-                public final Object Mensagem = "Cliente não encontrado";
-            });
         }
     }
 }

@@ -26,7 +26,7 @@ public class TransacaoModel {
     @Column(name = "c_valor", nullable = false)
     private Double valor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn (name = "c_cliente_id", referencedColumnName= "c_cliente_id", nullable = false)
     private ClienteModel cliente;
 
