@@ -25,12 +25,17 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
+<<<<<<< HEAD
 build/  
+=======
+build/
+>>>>>>> db9af11b13dfec0cb7443c0308e38dfeca8e9604
 !**/src/main/**/build/
 !**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,linux,intellij,visualstudiocode,netbeans,eclipse
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,intellij,visualstudiocode,netbeans,eclipse
 
@@ -323,3 +328,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,intellij,visualstudiocode,netbeans,eclipse
+=======
+>>>>>>> db9af11b13dfec0cb7443c0308e38dfeca8e9604

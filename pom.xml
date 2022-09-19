@@ -8,6 +8,7 @@
 		<version>2.7.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+<<<<<<< HEAD
 	<groupId>com.br.g6bank</groupId>
 	<artifactId>hellobank</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -15,15 +16,28 @@
 	<description>Projeto Hello Bank</description>
 	<properties>
 		<java.version>11</java.version>
+=======
+	<groupId>ibm.ibtc</groupId>
+	<artifactId>Hello_bank_G6</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Hello_bank_G6</name>
+	<description>Desafio final IBM If Black Then Code do grupo 6</description>
+	<properties>
+		<java.version>18</java.version>
+>>>>>>> db9af11b13dfec0cb7443c0308e38dfeca8e9604
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+<<<<<<< HEAD
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+=======
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+>>>>>>> db9af11b13dfec0cb7443c0308e38dfeca8e9604
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -32,6 +46,14 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+<<<<<<< HEAD
+=======
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+>>>>>>> db9af11b13dfec0cb7443c0308e38dfeca8e9604
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
@@ -41,6 +63,23 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+<<<<<<< HEAD
+=======
+
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.16.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>java-dotenv</artifactId>
+			<version>5.2.2</version>
+		</dependency>
+
+>>>>>>> db9af11b13dfec0cb7443c0308e38dfeca8e9604
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
