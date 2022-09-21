@@ -60,7 +60,7 @@ public class ClienteController {
         }
     }
 
-    @PostMapping("/{param}")
+    @PostMapping("/getByCpf/{param}")
     public ResponseEntity<Object> findByCpf(@PathVariable String param) {
         var cliente = _clienteRepository.findByCpf(param);
         if (cliente.isPresent()) {
