@@ -83,7 +83,7 @@ public class ClienteController {
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<Object> createAnimal(@RequestBody ClienteCriarDTO clienteReq) {
+    public ResponseEntity<Object> criarCliente(@RequestBody ClienteCriarDTO clienteReq) {
 
         var clienteModel = new ClienteModel();
         var contaCorrenteModel = new ContaCorrenteModel();
