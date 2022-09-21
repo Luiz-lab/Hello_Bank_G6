@@ -27,8 +27,6 @@ class ClienteTest {
 		assertEquals("", cliente.getCpf());
 		assertEquals("", cliente.getTel());
 		assertEquals("", cliente.getEndereco());
-
-
 	}
 
 }
