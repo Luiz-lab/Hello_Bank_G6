@@ -54,12 +54,32 @@ public class ClienteController {
                 });
             }
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Object() {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
                 public final Object Mensagem = "Conta não encontrada";
             });
         }
+    }
 
-
+    @PostMapping("/{param}")
+    public ResponseEntity<Object> findByCpf(@PathVariable String param) {
+        var cliente = _clienteRepository.findByCpf(param);
+        if (cliente.isPresent()) {
+            var contaCorrente = _contaCorrenteRepository.findByClienteModel(cliente.get());
+            if (contaCorrente.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(new Object() {
+                    public final Object Cliente = cliente.get();
+                    public final Object Conta = contaCorrente.get();
+                });
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Object() {
+                    public final Object Mensagem = "Houve um problema com a conta, conta relacionada a este cliente não encontrada";
+                });
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Object() {
+                public final Object Mensagem = "Conta não encontrada";
+            });
+        }
     }
 
     @PostMapping("/criar")
