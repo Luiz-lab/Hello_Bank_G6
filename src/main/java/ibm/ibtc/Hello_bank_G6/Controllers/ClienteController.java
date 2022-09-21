@@ -7,6 +7,7 @@ import ibm.ibtc.Hello_bank_G6.Models.ClienteModel;
 import ibm.ibtc.Hello_bank_G6.Models.ContaCorrenteModel;
 import ibm.ibtc.Hello_bank_G6.Repositories.IClienteRepository;
 import ibm.ibtc.Hello_bank_G6.Repositories.IContaCorrenteRepository;
+import ibm.ibtc.Hello_bank_G6.Utils.HttpHelper;
 import ibm.ibtc.Hello_bank_G6.Utils.JWTGenerator;
 import ibm.ibtc.Hello_bank_G6.DTO.ClienteCriarDTO;
 import ibm.ibtc.Hello_bank_G6.ViewModels.ClienteViewModel;
@@ -35,14 +36,6 @@ public class ClienteController {
         this._clienteRepository = clienteRepository;
         this._contaCorrenteRepository = contaCorrenteRepository;
         this.encoder = encoder;
-    }
-
-    //Retirar posteriormente
-    @GetMapping("/")
-    public ResponseEntity<Object> getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(new Object() {
-            public final Object clientes = _clienteRepository.findAll();
-        });
     }
 
     @PostMapping("/{param_id}")
@@ -89,6 +82,12 @@ public class ClienteController {
 
         clienteModel.setSenha(encoder.encode(clienteModel.getSenha()));
 
+        var cpfValido = new HttpHelper().ValidarCpf(clienteModel.getCpf());
+        if (!cpfValido){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Object() {
+                public final Object Mensagem = "Cpf Inválido";
+            });
+        }
         _clienteRepository.save(clienteModel);
         _contaCorrenteRepository.save(contaCorrenteModel);
 

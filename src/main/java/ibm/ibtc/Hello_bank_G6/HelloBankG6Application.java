@@ -3,6 +3,7 @@ package ibm.ibtc.Hello_bank_G6;
 import ibm.ibtc.Hello_bank_G6.Models.TipoTransacaoEnum;
 import ibm.ibtc.Hello_bank_G6.Models.TransacaoModel;
 import ibm.ibtc.Hello_bank_G6.Models.TransferenciaModel;
+import ibm.ibtc.Hello_bank_G6.Utils.HttpHelper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
