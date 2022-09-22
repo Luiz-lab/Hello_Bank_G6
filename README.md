@@ -151,7 +151,108 @@ login ou criação de cliente.* </br>
   </p>
 </details> </br>
 
-> ## Links do projeto 
+> ## 🔸 Script SQL 
+
+<details>
+  <summary> <h3> Hibernate </h3> </summary></br>
+ Hibernate: 
+    
+    create table cliente_t (
+       c_cliente_id uuid not null,
+        c_cpf varchar(255) not null,
+        c_created_at timestamp not null,
+        c_email varchar(255) not null,
+        c_endereco varchar(255),
+        c_nome varchar(255) not null,
+        c_senha varchar(255) not null,
+        c_tel varchar(255),
+        c_updated_at timestamp,
+        primary key (c_cliente_id)
+    )
+Hibernate: 
+    
+    create table conta_corrente_t (
+       c_conta_corrente_id uuid not null,
+        c_created_at timestamp not null,
+        c_limite_negativo float8,
+        c_saldo float8 not null,
+        c_updated_at timestamp,
+        c_cliente_id uuid,
+        primary key (c_conta_corrente_id)
+    )
+Hibernate: 
+    
+    create table transacao_t (
+       c_transacao_id uuid not null,
+        c_created_at timestamp not null,
+        c_tipo_transacao varchar(255) not null,
+        c_updated_at timestamp,
+        c_valor float8 not null,
+        c_cliente_id uuid not null,
+        primary key (c_transacao_id)
+    )
+Hibernate: 
+    
+    create table transferencia_t (
+       c_transferencia_id uuid not null,
+        c_created_at timestamp not null,
+        c_updated_at timestamp,
+        c_valor float8 not null,
+        c_cliente_destinatario_id uuid,
+        c_cliente_remetente_id uuid,
+        primary key (c_transferencia_id)
+    )
+Hibernate: 
+    
+    alter table cliente_t 
+       drop constraint UK_797w5pvv6w36222lanb6outh9
+Hibernate: 
+    
+    alter table cliente_t 
+       add constraint UK_797w5pvv6w36222lanb6outh9 unique (c_cpf)
+Hibernate: 
+    
+    alter table cliente_t 
+       drop constraint UK_6dhibi73dc5iyuexovfhobyh7
+Hibernate: 
+    
+    alter table cliente_t 
+       add constraint UK_6dhibi73dc5iyuexovfhobyh7 unique (c_email)
+Hibernate: 
+    
+    alter table conta_corrente_t 
+       drop constraint UK_bqtiap2bpq1ssclaqd65fvx7m
+Hibernate: 
+    
+    alter table conta_corrente_t 
+       add constraint UK_bqtiap2bpq1ssclaqd65fvx7m unique (c_cliente_id)
+Hibernate: 
+    
+    alter table conta_corrente_t 
+       add constraint FKgsr667lpuhxvxlq41npbferne 
+       foreign key (c_cliente_id) 
+       references cliente_t
+Hibernate: 
+    
+    alter table transacao_t 
+       add constraint FKewdbf43b87c1pc8cbn8oukdg6 
+       foreign key (c_cliente_id) 
+       references cliente_t
+Hibernate: 
+    
+    alter table transferencia_t 
+       add constraint FKewik8dqxqyupalhq0evpj4f73 
+       foreign key (c_cliente_destinatario_id) 
+       references cliente_t
+Hibernate: 
+    
+    alter table transferencia_t 
+       add constraint FKrr61ojxi10r9d6hlhrobyvlp7 
+       foreign key (c_cliente_remetente_id) 
+       references cliente_t
+</details></br>
+
+> ## 🔗 Links do projeto 
 
 <details>
   <summary> <h3> Trello </h3> </summary></br>
@@ -163,16 +264,25 @@ login ou criação de cliente.* </br>
 <details>
   <summary> <h3> Documentação em PDF </h3> </summary></br>
   <p>
-    - Documentação> https://drive.google.com/file/d/1W3iM5IwryciPVExCJUzRzmQ6VZjsikuM/view?usp=sharing
+    - Documentação: https://drive.google.com/file/d/1W3iM5IwryciPVExCJUzRzmQ6VZjsikuM/view?usp=sharing
   </p>
-</details> </br>
+</details> 
 
 <details>
   <summary> <h3> Apresentação do Projeto </h3> </summary></br>
   <p>
-    - Documentação> https://drive.google.com/file/d/1p-POuc1vf5Sok1VA1PIVTd0aJZSScU9X/view?usp=sharing
+    - Projeto: https://drive.google.com/file/d/1p-POuc1vf5Sok1VA1PIVTd0aJZSScU9X/view?usp=sharing
+  </p>
+</details>
+
+<details>
+  <summary> <h3> Documentação da API </h3> </summary></br>
+  <p>
+    - Documentação da API: https://documenter.getpostman.com/view/13139925/2s7Z12H4hf
   </p>
 </details> </br>
+
+
 
 
 > ## 😜 Equipe 
