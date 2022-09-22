@@ -289,13 +289,13 @@ Hibernate:
 - [Diego Moura dos Santos](https://www.linkedin.com/in/diegomouradossantos/)
 - [Luis Henrique Calixto de Souza](https://www.linkedin.com/in/luiz-henrique-calixto-de-souza-29b892170/)
 - [Rodrigo Nunes da Silva](https://www.linkedin.com/in/rodrigo-nunes-7a9a957b)
-- [Rosemberg Vieira Araújo Filho](https://github.com/RosembergAraujo)
+- [Rosemberg Vieira Araújo Filho](https://github.com/RosembergAraujo)</br>
 
 > **Warning**
 > Variáveis de ambiente e acesso ao banco estão expostas de proposito </br>
 
 
-<footer> *Este projeto é de código  aberto e está disponível sob a Licença.*</footer>
+<footer> *Este projeto é de código  aberto e está disponível sob a Licença MIT.*</footer>
 
 
 
