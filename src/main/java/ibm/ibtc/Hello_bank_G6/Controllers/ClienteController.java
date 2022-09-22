@@ -60,9 +60,9 @@ public class ClienteController {
         }
     }
 
-    @PostMapping("/getByCpf/{param}")
-    public ResponseEntity<Object> findByCpf(@PathVariable String param) {
-        var cliente = _clienteRepository.findByCpf(param);
+    @PostMapping("/getByCpf/{param_cpf}")
+    public ResponseEntity<Object> findByCpf(@PathVariable String param_cpf) {
+        var cliente = _clienteRepository.findByCpf(param_cpf);
         if (cliente.isPresent()) {
             var contaCorrente = _contaCorrenteRepository.findByClienteModel(cliente.get());
             if (contaCorrente.isPresent()) {
